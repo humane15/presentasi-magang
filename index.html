@@ -162,7 +162,7 @@ b,strong{font-weight:700}
 /* Reveal.js mengatur slide mana yang tampil; ukuran & tata letak tetap memakai CSS ini */
 body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
 #deck{position:fixed;inset:0;z-index:5;width:auto;height:auto}
-.reveal .slides{text-align:left;perspective:none}
+.reveal .slides{text-align:left;perspective:1400px;perspective-origin:50% 50%}
 .reveal .slides > section.slide{
   position:absolute;inset:0;width:100%;height:100%;flex-direction:column;
   padding:var(--pad-top) var(--pad-r) var(--pad-bot) var(--pad-l);
@@ -570,6 +570,9 @@ body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
   .closing p span{display:block;height:0;overflow:hidden}
 }
 
+/* Pratinjau di jendela catatan pembicara: sembunyikan tombol & kursor */
+html.is-receiver .bottombar,html.is-receiver .dots,html.is-receiver .cursor-dot,html.is-receiver .cursor-ring{display:none}
+
 /* Mode gerak dikurangi: nonaktifkan animasi CSS berulang */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
@@ -666,8 +669,9 @@ const DATA = {
   pengaturan: {
     // true = poin daftar muncul satu per satu setiap kali tombol panah ditekan
     poinBertahap: false,
-    // efek pergantian slide Reveal: "fade", "slide", "convex", "concave", "zoom", atau "none"
-    transisi: "fade"
+    // efek pergantian slide: "3d" (putaran kubus 3D), atau efek bawaan Reveal:
+    // "fade", "slide", "convex", "concave", "zoom", "none"
+    transisi: "3d"
   },
 
   // Label badge status
@@ -688,11 +692,11 @@ const DATA = {
       targetTeks: "Terhubung ke Google Drive, memakai data pegawai asli, dan mengirim pemberitahuan lewat email serta pengingat otomatis."
     },
     zoom: {
-      nama: "Aplikasi Reservasi Zoom", persen: 30, target: 100, status: "berjalan", slide: 6,
-      targetTeks: "Fitur pemesanan, persetujuan, dan kalender selesai, lalu siap dipakai pegawai."
+      nama: "Aplikasi Reservasi Zoom", persen: 30, target: 80, status: "berjalan", slide: 6,
+      targetTeks: "Fitur pemesanan, persetujuan, dan kalender selesai, lalu masuk tahap uji coba."
     },
     spj: {
-      nama: "Aplikasi SPJ", persen: 20, target: 60, status: "awal", slide: 7,
+      nama: "Aplikasi SPJ", persen: 20, target: 80, status: "awal", slide: 7,
       targetTeks: "Mulai tahap pembuatan dan menyelesaikan fitur utama penyusunan SPJ."
     }
   },
@@ -873,7 +877,7 @@ const DATA = {
     /* ---------- SLIDE 8 ---------- */
     {
       tipe: "rencana", nav: "Target Bulan Depan",
-      catatan: "Untuk bulan depan, targetnya Otomasi Spreadsheet, Portal Mutu, dan Reservasi Zoom selesai seratus persen, dan Aplikasi SPJ mencapai enam puluh persen. Terima kasih atas perhatian dan bimbingan Bapak dan Ibu. Saya siap menerima masukan.",
+      catatan: "Untuk bulan depan, targetnya Otomasi Spreadsheet dan Portal Mutu selesai seratus persen, sedangkan Reservasi Zoom dan Aplikasi SPJ mencapai delapan puluh persen. Terima kasih atas perhatian dan bimbingan Bapak dan Ibu. Saya siap menerima masukan.",
       kicker: "Rencana & Target Satu Bulan ke Depan",
       judul: "Target Bulan *Depan*",
       urutan: ["spreadsheet", "portal", "zoom", "spj"],
@@ -1372,6 +1376,20 @@ const DATA = {
      --------------------------------------------------------------- */
   let current = 0, lastNav = 0;
   const started = () => window.__deck.started;
+  const use3D = !reduceMotion && DATA.pengaturan.transisi === '3d';
+
+  /* Transisi 3D: slide lama dan baru berputar seperti dua sisi kubus */
+  function transition3D(prev, cur, dir) {
+    gsap.killTweensOf(slides);
+    slides.forEach(sl => { if (sl !== prev && sl !== cur) gsap.set(sl, { clearProps: 'transform,opacity,zIndex' }); });
+    const d = 1.2, ease = 'power3.inOut';
+    gsap.fromTo(prev,
+      { rotationY: 0, xPercent: 0, z: 0, opacity: 1, zIndex: 12, transformOrigin: dir > 0 ? '100% 50%' : '0% 50%' },
+      { rotationY: -dir * 75, xPercent: -dir * 50, z: -320, opacity: 0, duration: d, ease, clearProps: 'transform,opacity,zIndex' });
+    gsap.fromTo(cur,
+      { rotationY: dir * 75, xPercent: dir * 50, z: -320, opacity: 0, transformOrigin: dir > 0 ? '0% 50%' : '100% 50%' },
+      { rotationY: 0, xPercent: 0, z: 0, opacity: 1, duration: d, ease, clearProps: 'transform,opacity' });
+  }
 
   function updateChrome(i) {
     $('#curNum').textContent = pad(i + 1);
@@ -1391,10 +1409,13 @@ const DATA = {
     window.__deck.current = i;
     lastNav = performance.now();
     updateChrome(i);
-    window.dispatchEvent(new CustomEvent('deck:slide', { detail: { index: i } }));
-    if (e.previousSlide && e.previousSlide !== e.currentSlide) exitSlide(e.previousSlide, dir);
+    window.dispatchEvent(new CustomEvent('deck:slide', { detail: { index: i, dir } }));
     e.currentSlide.scrollTop = 0;
-    enterSlide(e.currentSlide, reduceMotion ? 0 : 0.3);
+    if (e.previousSlide && e.previousSlide !== e.currentSlide) {
+      exitSlide(e.previousSlide, dir);
+      if (use3D) transition3D(e.previousSlide, e.currentSlide, dir);
+    }
+    enterSlide(e.currentSlide, reduceMotion ? 0 : use3D ? 0.4 : 0.3);
   }
 
   const goTo = i => { if (started()) Reveal.slide(Math.max(0, Math.min(N - 1, i | 0))); };
@@ -1524,6 +1545,7 @@ const DATA = {
      I. LOADING SCREEN LALU MULAI
      --------------------------------------------------------------- */
   const isReceiver = /receiver/.test(location.search); // jendela pratinjau catatan pembicara
+  if (isReceiver) document.documentElement.classList.add('is-receiver');
 
   function startDeck() {
     Reveal.initialize({
@@ -1539,12 +1561,13 @@ const DATA = {
       slideNumber: false,
       // Alamat slide: index.html#/5 = slide 5
       hash: true,
-      hashOneBasedIndex: true,
+      // Jendela catatan pembicara mengirim nomor slide mulai dari 0
+      hashOneBasedIndex: !isReceiver,
       navigationMode: 'linear',
       // Scroll & swipe ditangani Observer agar isi panjang di HP tetap bisa di-scroll
       touch: false,
       mouseWheel: false,
-      transition: reduceMotion ? 'none' : DATA.pengaturan.transisi,
+      transition: reduceMotion || use3D ? 'none' : DATA.pengaturan.transisi,
       transitionSpeed: 'default',
       backgroundTransition: 'none',
       viewDistance: 2,
@@ -1564,7 +1587,25 @@ const DATA = {
       gsap.fromTo('.chrome', { opacity: 0 }, { opacity: 1, duration: 1, stagger: 0.08, delay: 0.4 });
       enterSlide(Reveal.getCurrentSlide());
       Reveal.on('slidechanged', onSlideChanged);
-      Reveal.on('overviewhidden', () => { lastNav = performance.now(); });
+      // Mode ikhtisar (Esc/O): tampilkan semua slide dalam keadaan akhir
+      Reveal.on('overviewshown', () => {
+        running.splice(0).forEach(t => t.kill());
+        gsap.killTweensOf(slides);
+        gsap.set(slides, { clearProps: 'transform,opacity,zIndex' });
+        slides.forEach(sl => {
+          const p = partsOf(sl);
+          gsap.killTweensOf([...p.split, ...p.chars, ...p.lines, ...p.cards]);
+          gsap.set([...p.split, ...p.chars, ...p.lines, ...p.cards], { clearProps: 'opacity,transform,filter' });
+          $$('[data-count]', sl).forEach(c => { c.textContent = fmt.format(+c.dataset.count) + (c.dataset.suffix || ''); });
+          $$('[data-ring]', sl).forEach(r => r.setAttribute('stroke-dashoffset', RING_C * (1 - r.dataset.ring / 100)));
+          $$('[data-w]', sl).forEach(b => { b.style.width = b.dataset.w + '%'; });
+          $$('.slot, .tl-node, .illu-bars i', sl).forEach(x => gsap.set(x, { clearProps: 'opacity,transform' }));
+        });
+      });
+      Reveal.on('overviewhidden', () => {
+        lastNav = performance.now();
+        enterSlide(Reveal.getCurrentSlide(), 0.2);
+      });
       window.dispatchEvent(new CustomEvent('deck:start', { detail: { index: current } }));
     });
   }
@@ -2052,6 +2093,7 @@ function initScene() {
   };
   const camBase = new THREE.Vector3(0, 0, 11);
   const motion = { spin: reduce ? 0 : 0.12, boost: 0 };
+  let swingDir = 1; // arah putaran mengikuti arah pindah slide
 
   function applyPose(i, d) {
     const p = poseFor(i);
@@ -2060,7 +2102,7 @@ function initScene() {
     gsap.to(world.rotation, { x: p.rot[0], y: p.rot[1], z: p.rot[2], ...opt });
     gsap.to(camBase, { x: p.cam[0], y: p.cam[1], z: p.cam[2], ...opt });
     gsap.to(uniforms.uOpacity, { value: p.op, ...opt });
-    if (!reduce) gsap.fromTo(motion, { boost: 1.3 }, { boost: 0, duration: 2.4, ease: 'power2.out', overwrite: 'auto' });
+    if (!reduce) gsap.fromTo(motion, { boost: 1.6 * swingDir }, { boost: 0, duration: 2.4, ease: 'power2.out', overwrite: 'auto' });
   }
 
   /* ---------- 8. Morph: salin posisi saat ini, lalu tween ke bentuk baru ---------- */
@@ -2136,7 +2178,7 @@ function initScene() {
     if (index === 7) { slideNow = -1; goSlide(7); }
   }
   window.addEventListener('deck:start', e => start(e.detail.index));
-  window.addEventListener('deck:slide', e => { if (!started) start(e.detail.index); else goSlide(e.detail.index); });
+  window.addEventListener('deck:slide', e => { swingDir = e.detail.dir || 1; if (!started) start(e.detail.index); else goSlide(e.detail.index); });
   if (window.__deck && window.__deck.started) start(window.__deck.current);
 
   function onResize() {
