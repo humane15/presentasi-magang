@@ -182,7 +182,7 @@ body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
 .head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:2.5rem}
 .head-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:1rem;max-width:62rem}
 .head-side{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:.9rem}
-.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.3rem}
+.grid-proj{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:1.3rem}
 .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.3rem}
 .grid-5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1rem}
 .card-in{display:flex;min-width:0}
@@ -196,7 +196,8 @@ body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
 .k-row{display:flex;align-items:center;flex-wrap:wrap;gap:1rem}
 .h-hero{font-size:6.2rem;font-weight:800;line-height:1;letter-spacing:-.04em;text-shadow:0 4px 40px rgba(5,11,20,.7)}
 .h-title{font-size:3.7rem;font-weight:800;line-height:1.05;letter-spacing:-.032em;text-shadow:0 4px 30px rgba(5,11,20,.7)}
-.sheet .h-title,.rekap .h-title,.spj .h-title{font-size:3.3rem}
+.spj .h-title{font-size:3.3rem}
+.oto .h-title{font-size:3rem}
 .lead{font-size:1.5rem;line-height:1.45;color:#C9D4E0;max-width:50rem}
 .num-xl{
   font-family:var(--num);font-weight:700;font-size:clamp(64px,7.4rem,140px);line-height:.9;letter-spacing:-.045em;
@@ -241,6 +242,8 @@ body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
 }
 .glass:hover::before,.glass:hover::after{opacity:1}
 .lite .glass{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);background:rgba(10,20,34,.6)}
+/* Saat slide berputar 3D, blur kaca dimatikan sementara agar ringan */
+.is-turning .glass,.is-turning .nav-btn{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(12,22,38,.82)}
 
 /* Badge status */
 .badge{
@@ -286,7 +289,7 @@ body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
 .btn-primary:hover .ic{transform:translateX(4px)}
 
 /* =========================================================
-   8. SLIDE 1: PEMBUKA
+   8. SLIDE PEMBUKA
    ========================================================= */
 .hero{display:flex;flex-direction:column;align-items:flex-start;gap:1.7rem;max-width:56rem}
 .presenter{display:flex;align-items:center;gap:1.2rem;padding:1rem 1.6rem 1rem 1rem;border-radius:20px}
@@ -303,7 +306,7 @@ body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
 .hint .ic{font-size:1.2rem}
 
 /* =========================================================
-   9. SLIDE 2: RINGKASAN
+   9. SLIDE RINGKASAN
    ========================================================= */
 .s-head{display:flex;flex-direction:column;gap:1rem}
 .proj-card{display:flex;flex-direction:column;align-items:flex-start;gap:1.1rem;padding:1.6rem;height:100%}
@@ -325,7 +328,7 @@ body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
 .stat p{margin-top:.55rem;font-size:1rem;color:var(--muted);line-height:1.4}
 
 /* =========================================================
-   10. SLIDE 3: PORTAL
+   10. SLIDE PORTAL
    ========================================================= */
 .mini-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
 .mini{display:flex;flex-direction:column;padding:.8rem 1rem;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08)}
@@ -334,119 +337,70 @@ body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
 .col-cards{gap:1.2rem}
 
 /* =========================================================
-   11. SLIDE 4: OTOMASI SPREADSHEET (diagram alur)
+   11. SLIDE OTOMASI SPREADSHEET & REKAP (diagram alur 3 tahap)
    ========================================================= */
-.todo{
-  display:flex;align-items:flex-start;gap:.6rem;max-width:26rem;font-size:.9rem;line-height:1.45;color:#D5DEE8;
-  padding:.7rem 1rem;border-radius:14px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.3);
-}
-.todo .ic{color:var(--gold);font-size:1.15rem;margin-top:.1rem}
-.todo b{color:var(--gold)}
-.flow{position:relative;display:grid;grid-template-columns:19rem minmax(5rem,1fr) 46rem;align-items:center}
+.oto{gap:1.3rem}
+.flow{position:relative;display:grid;grid-template-columns:14.5rem minmax(2.5rem,1fr) 30rem minmax(2.5rem,1fr) 29rem;align-items:center}
 .flow-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;opacity:0;filter:drop-shadow(0 0 6px rgba(45,212,191,.8))}
 .fl-base{fill:none;stroke:rgba(96,165,250,.25);stroke-width:1.5}
 .fl-glow{fill:none;stroke:var(--teal);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:70 330;animation:flowDash 2.6s linear infinite}
+.fl-glow.out{stroke:var(--blue)}
 .fl-dot{fill:#E6FFFB}
 @keyframes flowDash{from{stroke-dashoffset:400}to{stroke-dashoffset:0}}
 .flow-src{grid-column:1;position:relative;z-index:1}
-.flow-dst{grid-column:3;display:grid;gap:.9rem;position:relative;z-index:1}
-.src-card{display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;padding:1.6rem}
-.src-icon{position:relative;width:3.6rem;height:3.6rem;border-radius:16px;display:grid;place-items:center;font-size:1.8rem;color:#04121A;background:var(--grad);box-shadow:0 0 30px rgba(45,212,191,.55);margin-bottom:.4rem}
-.src-icon .pulse{position:absolute;inset:-6px;border-radius:20px;border:1px solid rgba(45,212,191,.7);animation:pulse 2.4s ease-out infinite}
+.flow-dst{grid-column:3;display:grid;gap:.7rem;position:relative;z-index:1}
+.flow-out{grid-column:5;position:relative;z-index:1}
+.src-card{display:flex;flex-direction:column;align-items:flex-start;gap:.45rem;padding:1.3rem}
+.src-icon{position:relative;width:3.2rem;height:3.2rem;border-radius:15px;display:grid;place-items:center;font-size:1.6rem;color:#04121A;background:var(--grad);box-shadow:0 0 30px rgba(45,212,191,.55);margin-bottom:.3rem}
+.src-icon .pulse{position:absolute;inset:-6px;border-radius:19px;border:1px solid rgba(45,212,191,.7);animation:pulse 2.4s ease-out infinite}
 @keyframes pulse{0%{transform:scale(.9);opacity:1}100%{transform:scale(1.5);opacity:0}}
-.src-card strong{font-size:1.35rem;line-height:1.2}
-.src-card > span{font-size:.95rem;color:var(--muted)}
-.src-pill{display:inline-flex;align-items:center;gap:.5rem;margin-top:.4rem;padding:.35rem .8rem;border-radius:999px;font-size:.82rem;font-weight:700;color:var(--gold);background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.35)}
+.src-card strong{font-size:1.2rem;line-height:1.2}
+.src-card > span{font-size:.88rem;color:var(--muted)}
+.src-pill{display:inline-flex;align-items:center;gap:.5rem;margin-top:.3rem;padding:.3rem .75rem;border-radius:999px;font-size:.78rem;font-weight:700;color:var(--gold);background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.35)}
 .src-pill i{width:.45rem;height:.45rem;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);animation:blink 1.4s ease-in-out infinite}
 @keyframes blink{50%{opacity:.25}}
-.dst-card{display:grid;grid-template-columns:2.9rem 1fr;gap:1.1rem;padding:1.1rem 1.4rem;align-items:start}
-.dst-icon{width:2.9rem;height:2.9rem;border-radius:14px;display:grid;place-items:center;font-size:1.4rem;color:var(--teal);background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3)}
-.dst-body{display:flex;flex-direction:column;gap:.35rem;min-width:0}
-.dst-top{display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap}
-.dst-top strong{font-size:1.15rem}
-.dst-body p{font-size:.95rem;line-height:1.45;color:#C3CEDA}
-.chips{display:flex;flex-wrap:wrap;gap:.4rem}
-.chip{font-size:.78rem;font-weight:600;padding:.22rem .65rem;border-radius:999px;color:#BFDBFE;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3)}
-.benefits{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.2rem}
-.benefit{display:flex;align-items:center;gap:.9rem;font-size:1.02rem;font-weight:600;line-height:1.35}
-.b-icon{width:2.9rem;height:2.9rem;flex:none;border-radius:50%;display:grid;place-items:center;font-size:1.3rem;color:var(--teal);background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.4);box-shadow:0 0 20px -4px rgba(45,212,191,.5)}
-
-/* =========================================================
-   12. SLIDE 5: REKAP
-   ========================================================= */
-.tag{display:inline-flex;align-items:center;gap:.45rem;font-size:.8rem;font-weight:600;padding:.32rem .8rem;border-radius:999px;color:var(--text);background:rgba(255,255,255,.06);border:1px solid var(--glass-border)}
-.tag .ic{color:var(--teal)}
-.illu{width:25rem;padding:1.1rem 1.3rem 1.2rem}
-.illu-top{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;font-weight:600;color:var(--muted);margin-bottom:.8rem}
-.illu-top em{font-style:normal;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;padding:.15rem .5rem;border-radius:6px;border:1px dashed rgba(255,255,255,.25)}
-.illu-bars{display:flex;align-items:flex-end;gap:.5rem;height:6.5rem;border-bottom:1px solid rgba(255,255,255,.12)}
-.illu-bars i{flex:1;height:var(--h);border-radius:6px 6px 2px 2px;transform-origin:50% 100%;background:linear-gradient(180deg,var(--teal),rgba(96,165,250,.35));box-shadow:0 0 14px -2px rgba(45,212,191,.6)}
-.illu-bars i:nth-child(3n){background:linear-gradient(180deg,var(--blue),rgba(96,165,250,.25))}
-.rekap-card{padding:1.4rem 1.6rem}
-.rc-head{display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem}
-.rc-head h3{font-size:1.3rem;font-weight:700;flex:1}
-.rc-icon{width:2.6rem;height:2.6rem;border-radius:12px;display:grid;place-items:center;font-size:1.25rem;color:var(--teal);background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3)}
-.highlight{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:2.4rem;align-items:center;padding:1.4rem 1.8rem;border-color:rgba(251,191,36,.28);background:linear-gradient(120deg,rgba(251,191,36,.06),rgba(255,255,255,.03))}
-.hl-label{display:inline-flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
-.hl-label .ic{font-size:1.1rem}
-.hl-text p{font-size:1.05rem;line-height:1.5;color:#D5DEE8}
-.hl-viz{display:flex;flex-direction:column;gap:.9rem}
-.hl-nums{display:flex;align-items:flex-end;gap:1.2rem}
+.dst-card{display:grid;grid-template-columns:2.4rem 1fr;gap:.85rem;padding:.85rem 1.1rem;align-items:start}
+.dst-icon{width:2.4rem;height:2.4rem;border-radius:12px;display:grid;place-items:center;font-size:1.15rem;color:var(--teal);background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.3)}
+.dst-body{display:flex;flex-direction:column;gap:.3rem;min-width:0}
+.dst-top{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+.dst-top strong{font-size:1.02rem}
+.dst-body p{font-size:.84rem;line-height:1.42;color:#C3CEDA}
+.chips{display:flex;flex-wrap:wrap;gap:.3rem}
+.chip{font-size:.7rem;font-weight:600;padding:.16rem .55rem;border-radius:999px;color:#BFDBFE;background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3)}
+.out-card{padding:1.1rem 1.3rem;display:flex;flex-direction:column;gap:.55rem;border-color:rgba(96,165,250,.3)}
+.out-head{display:flex;align-items:center;gap:.8rem}
+.out-head strong{display:block;font-size:1.08rem;line-height:1.25}
+.out-head > div span{font-size:.8rem;color:var(--muted)}
+.rc-icon{width:2.4rem;height:2.4rem;flex:none;border-radius:12px;display:grid;place-items:center;font-size:1.15rem;color:#04121A;background:var(--grad);box-shadow:0 0 22px rgba(96,165,250,.45)}
+.out-sec{padding-top:.55rem;border-top:1px solid rgba(255,255,255,.08)}
+.out-top{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-bottom:.1rem}
+.out-top h4{font-size:.95rem;font-weight:700}
+.out-card .list li{grid-template-columns:1.25rem 1fr;gap:.55rem;padding:.26rem 0;font-size:.84rem;line-height:1.4;border-bottom:0}
+.out-card .list li .ic{width:1.25rem;height:1.25rem;padding:.22rem}
+.oto-bottom{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:1.3rem;align-items:center}
+.benefits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem 1rem}
+.benefit{display:flex;align-items:center;gap:.75rem;font-size:.92rem;font-weight:600;line-height:1.35}
+.b-icon{width:2.3rem;height:2.3rem;flex:none;border-radius:50%;display:grid;place-items:center;font-size:1.05rem;color:var(--teal);background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.4);box-shadow:0 0 20px -4px rgba(45,212,191,.5)}
+.highlight{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:1.6rem;align-items:center;padding:1rem 1.4rem;border-color:rgba(251,191,36,.28);background:linear-gradient(120deg,rgba(251,191,36,.06),rgba(255,255,255,.03))}
+.hl-label{display:inline-flex;align-items:center;gap:.5rem;font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem}
+.hl-label .ic{font-size:1rem}
+.hl-text p{font-size:.86rem;line-height:1.45;color:#D5DEE8}
+.hl-viz{display:flex;flex-direction:column;gap:.7rem}
+.hl-nums{display:flex;align-items:flex-end;gap:1rem}
 .hl-nums > div{display:flex;flex-direction:column}
-.hl-k{font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.hl-nums strong{font-family:var(--num);font-size:2.8rem;line-height:1;letter-spacing:-.04em}
+.hl-k{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.hl-nums strong{font-family:var(--num);font-size:2.1rem;line-height:1;letter-spacing:-.04em}
 .c-now{color:var(--teal)}
 .c-gold{color:var(--gold);text-shadow:0 0 24px rgba(251,191,36,.5)}
-.hl-arrow{font-size:1.6rem;color:var(--muted);margin-bottom:.4rem}
-.hl-bar{position:relative;height:1rem;border-radius:99px;background:rgba(255,255,255,.07)}
+.hl-arrow{font-size:1.3rem;color:var(--muted);margin-bottom:.3rem}
+.hl-bar{position:relative;height:.85rem;border-radius:99px;background:rgba(255,255,255,.07)}
 .hl-bar i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:inherit}
 .hl-proj{background:repeating-linear-gradient(45deg,rgba(251,191,36,.75) 0 7px,rgba(251,191,36,.45) 7px 14px);box-shadow:0 0 22px rgba(251,191,36,.6);animation:goldGlow 2s ease-in-out infinite}
 .hl-now{background:linear-gradient(90deg,var(--teal),#99F6E4);box-shadow:0 0 16px rgba(45,212,191,.7)}
 @keyframes goldGlow{50%{box-shadow:0 0 34px rgba(251,191,36,.9)}}
 
 /* =========================================================
-   13. SLIDE 6: RESERVASI ZOOM (mockup kalender)
-   ========================================================= */
-.zoom-lists{padding:1.3rem 1.5rem;display:grid;gap:.9rem}
-.mini-list h4{display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.1rem}
-.mini-list h4 .ic{font-size:1.05rem;color:var(--teal)}
-.mini-list + .mini-list h4 .ic{color:var(--gold)}
-.mini-list .list li{padding:.4rem 0;font-size:.98rem}
-.cal{padding:1.4rem 1.5rem 1.5rem;--row:2.55rem}
-.cal-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.1rem}
-.cal-title{display:flex;align-items:center;gap:.8rem}
-.cal-logo{width:2.6rem;height:2.6rem;border-radius:12px;display:grid;place-items:center;font-size:1.3rem;color:#04121A;background:var(--grad);box-shadow:0 0 22px rgba(96,165,250,.5)}
-.cal-title strong{display:block;font-size:1.1rem}
-.cal-title span{font-size:.82rem;color:var(--muted)}
-.cal-btn{display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;font-weight:700;padding:.5rem .9rem;border-radius:999px;color:var(--teal);background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.35)}
-.cal-head,.cal-body{display:grid;grid-template-columns:3.6rem repeat(var(--days),minmax(0,1fr));gap:0 .45rem}
-.cal-day{text-align:center;font-size:.8rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-bottom:.6rem}
-.cal-body{position:relative;height:calc(var(--rows) * var(--row))}
-.cal-times{display:flex;flex-direction:column}
-.cal-times span{height:var(--row);font-family:var(--num);font-size:.72rem;color:var(--muted);transform:translateY(-.5em)}
-.cal-col{position:relative;border-radius:10px;background:repeating-linear-gradient(180deg,rgba(255,255,255,.06) 0 1px,transparent 1px var(--row)),rgba(255,255,255,.015)}
-.slot{
-  position:absolute;left:3px;right:3px;top:calc(var(--s) * var(--row) + 2px);height:calc(var(--d) * var(--row) - 4px);
-  border-radius:9px;padding:.35rem .5rem;overflow:hidden;display:flex;flex-direction:column;gap:.05rem;border-left:3px solid;
-}
-.slot strong{font-size:.74rem;line-height:1.2}
-.slot span{font-family:var(--num);font-size:.64rem;opacity:.8}
-.slot.teal{background:rgba(45,212,191,.16);border-color:var(--teal);color:#CCFBF1}
-.slot.blue{background:rgba(96,165,250,.16);border-color:var(--blue);color:#DBEAFE}
-.slot.gold{background:rgba(251,191,36,.14);border-color:var(--gold);color:#FEF3C7}
-.slot.kosong{background:transparent;border:1px dashed rgba(255,255,255,.28);color:var(--muted)}
-.slot.lit.teal{animation:litTeal 3s ease-in-out infinite}
-.slot.lit.blue{animation:litBlue 3s ease-in-out infinite}
-.slot.lit.gold{animation:litGold 3s ease-in-out infinite}
-@keyframes litTeal{50%{box-shadow:0 0 22px rgba(45,212,191,.55)}}
-@keyframes litBlue{50%{box-shadow:0 0 22px rgba(96,165,250,.55)}}
-@keyframes litGold{50%{box-shadow:0 0 22px rgba(251,191,36,.5)}}
-.cal-now{position:absolute;left:3.6rem;right:0;top:calc(var(--t) * var(--row));height:2px;background:var(--gold);box-shadow:0 0 10px var(--gold);pointer-events:none}
-.cal-now::before{content:"";position:absolute;left:-5px;top:-4px;width:10px;height:10px;border-radius:50%;background:var(--gold)}
-.cal-note{font-size:.82rem;color:var(--muted);text-align:center;margin-top:.8rem;letter-spacing:.06em}
-
-/* =========================================================
-   14. SLIDE 7: APLIKASI SPJ (timeline)
+   12. SLIDE APLIKASI SPJ (timeline)
    ========================================================= */
 .tl{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
 .tl-track{position:absolute;left:12.5%;right:12.5%;top:2.2rem;height:2px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.18) 0 8px,transparent 8px 14px)}
@@ -470,7 +424,7 @@ body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
 .d-check .ic{stroke-width:3}
 
 /* =========================================================
-   15. SLIDE 8: TARGET & PENUTUP
+   13. SLIDE TARGET & PENUTUP
    ========================================================= */
 .plan{gap:1.7rem}
 .legend{display:flex;gap:1.4rem;font-size:.88rem;color:var(--muted)}
@@ -478,8 +432,10 @@ body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
 .legend i{width:1.6rem;height:.5rem;border-radius:9px}
 .lg-now{background:var(--grad);box-shadow:0 0 10px rgba(45,212,191,.6)}
 .lg-tgt{background:var(--gold);box-shadow:0 0 12px rgba(251,191,36,.8)}
+.plan-grid{display:grid;grid-template-columns:repeat(var(--n,2),minmax(0,1fr));gap:1.3rem}
 .plan-card{padding:1.25rem 1.5rem;display:flex;flex-direction:column;gap:.8rem}
 .pl-top{display:flex;align-items:baseline;justify-content:space-between;gap:1rem}
+.plan-grid[style*="--n:3"] .pl-top{flex-direction:column;align-items:flex-start;gap:.3rem}
 .pl-top h3{font-size:1.2rem;font-weight:700}
 .pl-nums{display:flex;align-items:baseline;gap:.5rem;font-family:var(--num);font-weight:700;font-size:1.75rem;letter-spacing:-.03em;white-space:nowrap}
 .pl-nums .arr{font-size:1.2rem;color:var(--muted)}
@@ -497,7 +453,7 @@ body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
 .closing p span{color:rgba(255,255,255,.25);margin:0 .5rem}
 
 /* =========================================================
-   16. KURSOR CUSTOM
+   14. KURSOR CUSTOM
    ========================================================= */
 .cursor-dot,.cursor-ring{position:fixed;left:0;top:0;z-index:300;pointer-events:none;border-radius:50%;opacity:0;transition:opacity .3s}
 .cursor-dot{width:7px;height:7px;background:var(--teal);box-shadow:0 0 12px var(--teal)}
@@ -508,7 +464,7 @@ body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
 .has-cursor,.has-cursor *{cursor:none !important}
 
 /* =========================================================
-   17. RESPONSIF: HP & TABLET (kartu disusun vertikal, slide bisa di-scroll)
+   15. RESPONSIF: HP & TABLET (kartu disusun vertikal, slide bisa di-scroll)
    ========================================================= */
 @media (max-width:1100px),(max-aspect-ratio:5/4){
   html{font-size:clamp(14px,3.9vw,16px)}
@@ -516,14 +472,13 @@ body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
   .slide{-webkit-overflow-scrolling:touch}
   .stage{margin:0 auto auto}
   .stage-col{gap:1.5rem}
-  .split-2,.grid-2,.grid-4,.grid-5,.stats-4,.benefits,.highlight{grid-template-columns:1fr}
-  .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .split-2,.grid-2,.grid-proj,.grid-5,.stats-4,.highlight,.oto-bottom,.plan-grid{grid-template-columns:1fr}
   .stats-4{grid-template-columns:repeat(2,minmax(0,1fr))}
   .split-2{gap:1.6rem}
   .head-row{flex-direction:column;align-items:flex-start;gap:1.2rem}
   .head-side{align-items:flex-start;width:100%}
   .h-hero{font-size:clamp(2.4rem,11vw,3.6rem)}
-  .h-title,.sheet .h-title,.rekap .h-title,.spj .h-title{font-size:clamp(1.9rem,8vw,2.6rem)}
+  .h-title,.oto .h-title,.spj .h-title{font-size:clamp(1.9rem,8vw,2.6rem)}
   .lead{font-size:1.15rem}
   .what p{font-size:1.02rem}
   .num-xl{font-size:clamp(64px,20vw,110px)}
@@ -540,24 +495,19 @@ body.reveal-viewport{background:var(--bg);color:var(--text);line-height:1.5}
   #deck::after{bottom:0;background:linear-gradient(0deg,var(--bg) 25%,transparent)}
   .ring-wrap{width:6.2rem}
   .ring-label{font-size:1.5rem}
-  .proj-card{padding:1.1rem;gap:.8rem}
+  .proj-card{padding:1.1rem;gap:1rem;flex-direction:row;align-items:center;flex-wrap:wrap}
+  .pc-body{min-width:0}
+  .pc-link{width:100%}
   .pc-name{font-size:1rem}
   .stat-num{font-size:2.4rem}
   .mini-stats{gap:.6rem}
   .mini strong{font-size:1.4rem}
-  .flow{grid-template-columns:1fr;gap:1.4rem}
-  .flow-src,.flow-dst{grid-column:1}
+  .flow{grid-template-columns:1fr;gap:1.2rem}
+  .flow-src,.flow-dst,.flow-out{grid-column:1}
   .flow-svg{display:none}
-  .flow-dst{padding-left:1.1rem;border-left:2px solid rgba(45,212,191,.45)}
-  .illu{width:100%}
+  .flow-dst,.flow-out{padding-left:1.1rem;border-left:2px solid rgba(45,212,191,.45)}
+  .flow-out{border-left-color:rgba(96,165,250,.5)}
   .highlight{gap:1.2rem;padding:1.2rem}
-  .cal{padding:1rem;--row:2.2rem}
-  .cal-head,.cal-body{grid-template-columns:2.6rem repeat(var(--days),minmax(0,1fr));gap:0 .25rem}
-  .cal-now{left:2.6rem}
-  .slot{padding:.25rem .3rem}
-  .slot strong{font-size:.62rem}
-  .slot span{display:none}
-  .cal-btn{display:none}
   .tl{grid-template-columns:1fr;gap:1rem}
   .tl-track{left:2.2rem;right:auto;top:2.2rem;bottom:2.2rem;width:2px;height:auto;background:repeating-linear-gradient(180deg,rgba(255,255,255,.18) 0 8px,transparent 8px 14px)}
   .tl-fill{width:100% !important;height:12%}
@@ -684,19 +634,15 @@ const DATA = {
   // Data proyek (dipakai di slide ringkasan, slide proyek, dan slide target)
   proyek: {
     spreadsheet: {
-      nama: "Otomasi Spreadsheet Laboratorium", persen: 95, target: 100, status: "selesai", slide: 4,
+      nama: "Otomasi Spreadsheet Laboratorium", persen: 95, target: 100, status: "selesai",
       targetTeks: "Menyempurnakan tabel kabupaten di rekap Patologi Klinik agar 94% sampel terbaca kabupatennya."
     },
     portal: {
-      nama: "Portal Tim Kerja Mutu", persen: 85, target: 100, status: "berjalan", slide: 3,
+      nama: "Portal Tim Kerja Mutu", persen: 85, target: 100, status: "berjalan",
       targetTeks: "Terhubung ke Google Drive, memakai data pegawai asli, dan mengirim pemberitahuan lewat email serta pengingat otomatis."
     },
-    zoom: {
-      nama: "Aplikasi Reservasi Zoom", persen: 30, target: 80, status: "berjalan", slide: 6,
-      targetTeks: "Fitur pemesanan, persetujuan, dan kalender selesai, lalu masuk tahap uji coba."
-    },
     spj: {
-      nama: "Aplikasi SPJ", persen: 20, target: 80, status: "awal", slide: 7,
+      nama: "Aplikasi SPJ", persen: 20, target: 80, status: "awal",
       targetTeks: "Mulai tahap pembuatan dan menyelesaikan fitur utama penyusunan SPJ."
     }
   },
@@ -717,7 +663,7 @@ const DATA = {
     petunjuk: "Tekan panah, scroll, atau geser layar untuk berpindah slide"
   },
 
-  // Isi 8 slide (urutan = urutan tampil)
+  // Isi slide (urutan = urutan tampil)
   slides: [
     /* ---------- SLIDE 1 ---------- */
     {
@@ -731,10 +677,10 @@ const DATA = {
     /* ---------- SLIDE 2 ---------- */
     {
       tipe: "ringkasan", nav: "Ringkasan Satu Bulan",
-      catatan: "Dalam satu bulan ada empat proyek. Dua sudah hampir selesai dan sudah dipakai, yaitu Otomasi Spreadsheet dan Portal Tim Kerja Mutu. Dua lainnya masih berjalan. Angka di bawah menunjukkan hasil nyata yang sudah bisa dirasakan.",
+      catatan: "Dalam satu bulan ada tiga proyek. Dua sudah hampir selesai dan sudah dipakai, yaitu Otomasi Spreadsheet dan Portal Tim Kerja Mutu. Aplikasi SPJ masih di tahap awal. Angka di bawah menunjukkan hasil nyata yang sudah bisa dirasakan.",
       kicker: "Ringkasan Satu Bulan",
-      judul: "*4 Proyek* dalam 1 Bulan",
-      urutan: ["spreadsheet", "portal", "zoom", "spj"],
+      judul: "*3 Proyek* dalam 1 Bulan",
+      urutan: ["spreadsheet", "portal", "spj"],
       statistik: [
         { angka: 470,  label: "dokumen mutu sudah masuk ke portal" },
         { angka: 1288, label: "berkas pegawai sudah tercatat" },
@@ -771,11 +717,11 @@ const DATA = {
     },
     /* ---------- SLIDE 4 ---------- */
     {
-      tipe: "spreadsheet", nav: "Otomasi Spreadsheet", proyek: "spreadsheet",
-      catatan: "Petugas cukup mengisi daftar sampel satu kali. Setiap lima menit data berpindah sendiri ke file tiap instalasi. Hasilnya petugas tidak perlu mengetik ulang, data tidak dobel, dan salah ketik berkurang. Ketiga instalasi sudah memakainya.",
+      tipe: "otomasi", nav: "Otomasi Spreadsheet & Rekap", proyek: "spreadsheet",
+      catatan: "Petugas cukup mengisi daftar sampel satu kali. Setiap lima menit data berpindah sendiri ke file hasil tiap instalasi, lalu dari data yang sama laporan bulanan tersusun sendiri tanpa dihitung manual. Ketiga instalasi sudah memakainya. Yang tersisa hanya tabel kabupaten di rekap Patologi Klinik, dari 58 persen menjadi 94 persen sampel yang terbaca kabupatennya.",
       kicker: "Proyek",
-      judul: "Otomasi Spreadsheet *Laboratorium*",
-      iniApa: "Petugas cukup mengisi daftar sampel satu kali, lalu data berpindah sendiri ke file hasil tiap instalasi setiap 5 menit.",
+      judul: "Otomasi Spreadsheet & *Rekap Otomatis*",
+      iniApa: "Petugas cukup mengisi daftar sampel satu kali, lalu data berpindah sendiri ke file hasil tiap instalasi setiap 5 menit dan laporan bulanan tersusun sendiri.",
       sumber: { nama: "Daftar No Sampel", ket: "Diisi petugas satu kali", jeda: "Setiap 5 menit" },
       tujuan: [
         { nama: "Mikrobiologi", ikon: "microbe", status: "selesai",
@@ -787,71 +733,37 @@ const DATA = {
         { nama: "Kesehatan Lingkungan", ikon: "leaf", status: "selesai",
           teks: "Mengikuti format tabel yang biasa dipakai. Sampel nyamuk dan jentik otomatis dilewati karena ditangani bagian vektor." }
       ],
+      rekap: {
+        judul: "Rekap & Laporan Otomatis",
+        ket: "Laporan bulanan tanpa dihitung manual",
+        kartu: [
+          { nama: "Rekap Mikrobiologi", badge: { label: "Selesai", warna: "teal" },
+            poin: [
+              "6 ringkasan utama: total sampel, positif, negatif, resisten, invalid, dan angka positif.",
+              "4 grafik dan 4 tabel otomatis.",
+              "Diperbarui sendiri setiap 30 menit."
+            ] },
+          { nama: "Rekap Patologi Klinik", badge: { label: "Hampir Selesai", warna: "blue" },
+            poin: [
+              "Jumlah pemeriksaan per bulan untuk setiap jenis.",
+              "Hasil IgM Campak dan IgM Rubella lengkap dengan persentase positif dan negatif.",
+              "Tabel untuk seluruh 23 kabupaten/kota di Aceh."
+            ] }
+        ]
+      },
       manfaat: [
         { ikon: "noRetype", teks: "Tidak perlu ketik ulang data." },
         { ikon: "copies",   teks: "Tidak ada data dobel." },
         { ikon: "shield",   teks: "Lebih sedikit salah ketik." },
         { ikon: "timer",    teks: "Hemat waktu petugas." }
       ],
-      sisa: ["Menyempurnakan tabel kabupaten di rekap Patologi Klinik."]
-    },
-    /* ---------- SLIDE 5 ---------- */
-    {
-      tipe: "rekap", nav: "Rekap & Laporan Otomatis",
-      catatan: "Dari data yang sama, laporan bulanan tersusun sendiri tanpa dihitung manual. Rekap Mikrobiologi sudah selesai. Rekap Patologi Klinik hampir selesai; tabel kabupaten sedang disempurnakan dari 58 persen menjadi 94 persen sampel yang terbaca kabupatennya.",
-      kicker: "Bagian dari",
-      judul: "Rekap & Laporan *Otomatis*",
-      iniApa: "Laporan bulanan tersusun sendiri, tanpa dihitung manual.",
-      kartu: [
-        { nama: "Rekap Mikrobiologi", ikon: "microbe", badge: { label: "Selesai", warna: "teal" },
-          poin: [
-            "6 ringkasan utama: total sampel, positif, negatif, resisten, invalid, dan angka positif.",
-            "4 grafik dan 4 tabel otomatis.",
-            "Diperbarui sendiri setiap 30 menit."
-          ] },
-        { nama: "Rekap Patologi Klinik", ikon: "flask", badge: { label: "Hampir Selesai", warna: "blue" },
-          poin: [
-            "Jumlah pemeriksaan per bulan untuk setiap jenis.",
-            "Hasil IgM Campak dan IgM Rubella lengkap dengan persentase positif dan negatif.",
-            "Tabel untuk seluruh 23 kabupaten/kota di Aceh."
-          ] }
-      ],
       sorotan: {
         judul: "Sorotan sisa pekerjaan",
         teks: "Tabel kabupaten sedang disempurnakan. Saat ini 58% sampel sudah terbaca kabupatennya. Dengan perbaikan yang sudah diuji, angka ini naik menjadi 94%.",
         sekarang: 58, setelah: 94
-      },
-      ilustrasi: { judul: "Grafik bulanan", label: "ilustrasi", nilai: [42, 58, 50, 71, 64, 83, 76, 92, 68, 88] }
-    },
-    /* ---------- SLIDE 6 ---------- */
-    {
-      tipe: "zoom", nav: "Aplikasi Reservasi Zoom", proyek: "zoom",
-      catatan: "Aplikasi ini untuk memesan jadwal meeting Zoom agar tidak bentrok. Tampilannya sudah selesai dirancang seperti contoh di layar. Langkah berikutnya menghubungkan tampilan dengan penyimpanan data serta fitur pemesanan, persetujuan, dan kalender.",
-      kicker: "Proyek",
-      judul: "Aplikasi Reservasi *Zoom*",
-      iniApa: "Aplikasi untuk memesan jadwal meeting Zoom agar tidak bentrok.",
-      sudahJadi: ["Seluruh tampilan halaman sudah selesai dirancang."],
-      sisa: [
-        "Menghubungkan tampilan dengan tempat penyimpanan data.",
-        "Fitur pemesanan, persetujuan, dan kalender jadwal."
-      ],
-      kalender: {
-        judul: "Reservasi Zoom", subjudul: "Jadwal meeting minggu ini", tombol: "Pesan jadwal",
-        catatan: "Contoh tampilan aplikasi",
-        hari: ["Sen", "Sel", "Rab", "Kam", "Jum"],
-        jamMulai: 8, jamSelesai: 16, garisSekarang: 11.4,
-        slot: [
-          { hari: 0, mulai: 9,    durasi: 1.5, judul: "Rapat Tim Mutu",    warna: "teal" },
-          { hari: 1, mulai: 13,   durasi: 1,   judul: "Koordinasi Lab",    warna: "blue" },
-          { hari: 2, mulai: 10,   durasi: 1,   judul: "Webinar Kesehatan", warna: "blue" },
-          { hari: 2, mulai: 13.5, durasi: 1.5, judul: "Tersedia",          warna: "kosong" },
-          { hari: 3, mulai: 8.5,  durasi: 2,   judul: "Bimbingan Teknis",  warna: "gold" },
-          { hari: 4, mulai: 14,   durasi: 1,   judul: "Rapat Pimpinan",    warna: "teal" },
-          { hari: 0, mulai: 13,   durasi: 1,   judul: "Evaluasi Data",     warna: "gold" }
-        ]
       }
     },
-    /* ---------- SLIDE 7 ---------- */
+    /* ---------- SLIDE 5 ---------- */
     {
       tipe: "spj", nav: "Aplikasi SPJ", proyek: "spj",
       catatan: "Aplikasi SPJ masih di tahap awal. Kalau diibaratkan membangun rumah, saat ini denahnya sudah selesai. Lima rancangan di bawah menjadi dasar agar pembuatan aplikasinya nanti lebih cepat dan tidak salah arah.",
@@ -874,13 +786,13 @@ const DATA = {
         { ikon: "chat",     judul: "Urutan interaksi",           teks: "Bagaimana pengguna, aplikasi, dan data saling berkomunikasi." }
       ]
     },
-    /* ---------- SLIDE 8 ---------- */
+    /* ---------- SLIDE 6 ---------- */
     {
       tipe: "rencana", nav: "Target Bulan Depan",
-      catatan: "Untuk bulan depan, targetnya Otomasi Spreadsheet dan Portal Mutu selesai seratus persen, sedangkan Reservasi Zoom dan Aplikasi SPJ mencapai delapan puluh persen. Terima kasih atas perhatian dan bimbingan Bapak dan Ibu. Saya siap menerima masukan.",
+      catatan: "Untuk bulan depan, targetnya Otomasi Spreadsheet dan Portal Mutu selesai seratus persen, sedangkan Aplikasi SPJ mencapai delapan puluh persen. Terima kasih atas perhatian dan bimbingan Bapak dan Ibu. Saya siap menerima masukan.",
       kicker: "Rencana & Target Satu Bulan ke Depan",
       judul: "Target Bulan *Depan*",
-      urutan: ["spreadsheet", "portal", "zoom", "spj"],
+      urutan: ["spreadsheet", "portal", "spj"],
       penutup: "*Terima kasih*"
     }
   ]
@@ -927,6 +839,7 @@ const DATA = {
     leaf: '<path d="M5 19c0-8 5-14 15-15-1 10-7 15-15 15z"/><path d="M5 19l8-8"/>',
     video: '<rect x="2" y="6" width="14" height="12" rx="2"/><path d="m16 10 6-3v10l-6-3"/>',
     plus: '<path d="M12 5v14M5 12h14"/>',
+    chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
     target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
     plan: '<rect x="3" y="3" width="18" height="18" rx="1.5"/><path d="M3 10h7V3M14 21v-7h7M10 14h4"/>',
     hammer: '<path d="m14 12-8.5 8.5a2.1 2.1 0 0 1-3-3L11 9"/><path d="m17.6 14.6 3.4-3.4-6.6-6.6a4 4 0 0 0-5.6 0L8 5.4l4 1 5.6 5.6z"/>',
@@ -967,6 +880,8 @@ const DATA = {
       <span class="num-xl" data-count="${p}" data-suffix="%">0%</span>
       <div class="pct-meta"><span class="pct-label">${T.progres}</span><div class="bar"><i data-w="${p}"></i></div></div>
     </div>`;
+  // Nomor slide milik sebuah proyek (dicari otomatis dari DATA.slides)
+  const slideOfProject = key => Math.max(0, DATA.slides.findIndex(x => x.proyek === key));
   const projHead = (s, P) => `
     <div class="k-row" data-line><span class="kicker">${s.kicker}</span>${badge(P.status)}</div>
     <h2 class="h-title" data-split>${s.judul}</h2>
@@ -996,14 +911,14 @@ const DATA = {
           <div class="kicker" data-line>${s.kicker}</div>
           <h2 class="h-title" data-split>${s.judul}</h2>
         </header>
-        <div class="grid-4">
+        <div class="grid-proj" style="--n:${s.urutan.length}">
           ${s.urutan.map((k, i) => {
             const P = DATA.proyek[k];
             return card(`
               ${ring(P.persen)}
               <div class="pc-body"><span class="pc-no">${pad(i + 1)}</span><h3 class="pc-name">${P.nama}</h3>${badge(P.status)}</div>
               <span class="pc-link">${T.lihat} ${icon('arrowR')}</span>`,
-              'proj-card', `data-goto="${P.slide - 1}" role="button" tabindex="0" aria-label="${P.nama}, ${P.persen}%"`);
+              'proj-card', `data-goto="${slideOfProject(k)}" role="button" tabindex="0" aria-label="${P.nama}, ${P.persen}%"`);
           }).join('')}
         </div>
         <div class="stats-4">
@@ -1033,16 +948,13 @@ const DATA = {
       </div>`;
     },
 
-    spreadsheet: s => {
+    otomasi: s => {
       const P = DATA.proyek[s.proyek];
       return `
-      <div class="stage stage-col sheet">
+      <div class="stage stage-col oto">
         <div class="head-row">
           <div class="head-main">${projHead(s, P)}</div>
-          <div class="head-side">
-            ${pct(P.persen)}
-            <div class="todo" data-line>${icon('clock')}<span><b>${T.sisa}:</b> ${s.sisa.join(' ')}</span></div>
-          </div>
+          <div class="head-side">${pct(P.persen)}</div>
         </div>
         <div class="flow">
           <svg class="flow-svg" aria-hidden="true"></svg>
@@ -1063,80 +975,33 @@ const DATA = {
                 ${t.teks2 ? `<p>${t.teks2}</p>` : ''}
               </div>`, 'dst-card')).join('')}
           </div>
-        </div>
-        <div class="benefits">
-          ${s.manfaat.map(m => `<div class="benefit" data-line><span class="b-icon">${icon(m.ikon)}</span><span>${m.teks}</span></div>`).join('')}
-        </div>
-      </div>`;
-    },
-
-    rekap: s => {
-      const S = DATA.proyek.spreadsheet;
-      return `
-      <div class="stage stage-col rekap">
-        <div class="head-row">
-          <div class="head-main">
-            <div class="k-row" data-line><span class="kicker">${s.kicker}</span><span class="tag">${icon('sheet')}${S.nama} · ${S.persen}%</span></div>
-            <h2 class="h-title" data-split>${s.judul}</h2>
-            <div class="what" data-line><span class="what-label">${T.iniApa}</span><p>${s.iniApa}</p></div>
-          </div>
-          <div class="head-side">
+          <div class="flow-out">
             ${card(`
-              <div class="illu-top"><span>${s.ilustrasi.judul}</span><em>${s.ilustrasi.label}</em></div>
-              <div class="illu-bars">${s.ilustrasi.nilai.map(v => `<i style="--h:${v}%"></i>`).join('')}</div>`, 'illu')}
+              <div class="out-head"><span class="rc-icon">${icon('chart')}</span><div><strong>${s.rekap.judul}</strong><span>${s.rekap.ket}</span></div></div>
+              ${s.rekap.kartu.map(k => `
+                <div class="out-sec">
+                  <div class="out-top"><h4>${k.nama}</h4>${badge(k.badge, 'sm')}</div>
+                  ${list(k.poin, 'done')}
+                </div>`).join('')}`, 'out-card')}
           </div>
         </div>
-        <div class="grid-2">
-          ${s.kartu.map(k => card(`
-            <div class="rc-head"><span class="rc-icon">${icon(k.ikon)}</span><h3>${k.nama}</h3>${badge(k.badge)}</div>
-            ${list(k.poin, 'done')}`, 'rekap-card')).join('')}
-        </div>
-        ${card(`
-          <div class="hl-text">
-            <span class="hl-label">${icon('target')}${s.sorotan.judul}</span>
-            <p>${s.sorotan.teks}</p>
+        <div class="oto-bottom">
+          <div class="benefits">
+            ${s.manfaat.map(m => `<div class="benefit" data-line><span class="b-icon">${icon(m.ikon)}</span><span>${m.teks}</span></div>`).join('')}
           </div>
-          <div class="hl-viz">
-            <div class="hl-nums">
-              <div><span class="hl-k">${T.sekarang}</span><strong class="c-now">${count(s.sorotan.sekarang, '%')}</strong></div>
-              ${icon('arrowR', 'hl-arrow')}
-              <div><span class="hl-k">${T.setelah}</span><strong class="c-gold">${count(s.sorotan.setelah, '%', 0.9)}</strong></div>
-            </div>
-            <div class="hl-bar"><i class="hl-proj" data-w="${s.sorotan.setelah}" data-delay="0.9"></i><i class="hl-now" data-w="${s.sorotan.sekarang}"></i></div>
-          </div>`, 'highlight')}
-      </div>`;
-    },
-
-    zoom: s => {
-      const P = DATA.proyek[s.proyek];
-      const k = s.kalender;
-      const rows = k.jamSelesai - k.jamMulai;
-      const jam = h => `${pad(Math.floor(h))}.${pad(Math.round((h % 1) * 60))}`;
-      return `
-      <div class="stage split-2">
-        <div class="col">
-          ${projHead(s, P)}
-          ${pct(P.persen)}
           ${card(`
-            <div class="mini-list"><h4>${icon('check')}${T.sudahJadi}</h4>${list(s.sudahJadi, 'done')}</div>
-            <div class="mini-list"><h4>${icon('clock')}${T.sisa}</h4>${list(s.sisa, 'sisa')}</div>`, 'zoom-lists')}
-        </div>
-        <div class="col">
-          ${card(`
-            <div class="cal-top">
-              <div class="cal-title"><span class="cal-logo">${icon('video')}</span><div><strong>${k.judul}</strong><span>${k.subjudul}</span></div></div>
-              <span class="cal-btn">${icon('plus')}${k.tombol}</span>
+            <div class="hl-text">
+              <span class="hl-label">${icon('target')}${s.sorotan.judul}</span>
+              <p>${s.sorotan.teks}</p>
             </div>
-            <div class="cal-head" style="--days:${k.hari.length}"><span></span>${k.hari.map(h => `<div class="cal-day">${h}</div>`).join('')}</div>
-            <div class="cal-body" style="--days:${k.hari.length};--rows:${rows}">
-              <div class="cal-times">${Array.from({ length: rows }, (_, i) => `<span>${jam(k.jamMulai + i)}</span>`).join('')}</div>
-              ${k.hari.map((_, d) => `<div class="cal-col">${k.slot.filter(x => x.hari === d).map(x => `
-                <div class="slot ${x.warna}" style="--s:${x.mulai - k.jamMulai};--d:${x.durasi}">
-                  <strong>${x.warna === 'kosong' ? '+ ' : ''}${x.judul}</strong><span>${jam(x.mulai)} - ${jam(x.mulai + x.durasi)}</span>
-                </div>`).join('')}</div>`).join('')}
-              <div class="cal-now" style="--t:${k.garisSekarang - k.jamMulai}"></div>
-            </div>`, 'cal')}
-          <p class="cal-note" data-line>${k.catatan}</p>
+            <div class="hl-viz">
+              <div class="hl-nums">
+                <div><span class="hl-k">${T.sekarang}</span><strong class="c-now">${count(s.sorotan.sekarang, '%')}</strong></div>
+                ${icon('arrowR', 'hl-arrow')}
+                <div><span class="hl-k">${T.setelah}</span><strong class="c-gold">${count(s.sorotan.setelah, '%', 0.9)}</strong></div>
+              </div>
+              <div class="hl-bar"><i class="hl-proj" data-w="${s.sorotan.setelah}" data-delay="0.9"></i><i class="hl-now" data-w="${s.sorotan.sekarang}"></i></div>
+            </div>`, 'highlight')}
         </div>
       </div>`;
     },
@@ -1185,7 +1050,7 @@ const DATA = {
             <span><i class="lg-tgt"></i>${T.targetBulanDepan}</span>
           </div>
         </div>
-        <div class="grid-2">
+        <div class="plan-grid" style="--n:${s.urutan.length}">
           ${s.urutan.map(k => {
             const P = DATA.proyek[k];
             return card(`
@@ -1260,7 +1125,6 @@ const DATA = {
     $$('[data-count]', el).forEach(c => { c.textContent = fmt.format(+c.dataset.count) + (c.dataset.suffix || ''); });
     $$('[data-ring]', el).forEach(r => r.setAttribute('stroke-dashoffset', RING_C * (1 - r.dataset.ring / 100)));
     $$('[data-w]', el).forEach(b => { b.style.width = b.dataset.w + '%'; });
-    $$('.slot', el).forEach(s => s.classList.add('lit'));
     const svg = $('.flow-svg', el);
     if (svg) { layoutFlow(el); svg.style.opacity = 1; }
   }
@@ -1286,24 +1150,6 @@ const DATA = {
     $$('[data-w]', el).forEach(b => {
       add(gsap.fromTo(b, { width: '0%' }, { width: b.dataset.w + '%', duration: 1.5, delay: +b.dataset.delay || 0.1, ease: 'power3.out' }));
     });
-    // Grafik ilustrasi: naik lalu bergerak naik turun
-    const bars = $$('.illu-bars i', el);
-    if (bars.length) {
-      add(gsap.fromTo(bars, { scaleY: 0 }, { scaleY: 1, duration: 1, stagger: 0.06, ease: 'expo.out' }));
-      add(gsap.to(bars, {
-        scaleY: () => 0.45 + Math.random() * 0.55, duration: 1.4, ease: 'sine.inOut', stagger: 0.07,
-        repeat: -1, yoyo: true, repeatRefresh: true, delay: 1.3
-      }));
-    }
-    // Slot kalender menyala bertahap
-    const slots = $$('.slot', el);
-    if (slots.length) {
-      slots.forEach(s => s.classList.remove('lit'));
-      add(gsap.fromTo(slots, { opacity: 0, scale: 0.85, y: 8 }, {
-        opacity: 1, scale: 1, y: 0, duration: 0.6, stagger: 0.12, delay: 0.4, ease: 'back.out(1.8)',
-        onComplete: () => slots.forEach((s, i) => { s.style.animationDelay = (i * 0.45) + 's'; s.classList.add('lit'); })
-      }));
-    }
     // Timeline SPJ: node muncul satu per satu
     const nodes = $$('.tl-node', el);
     if (nodes.length) add(gsap.fromTo(nodes, { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, stagger: 0.12, ease: 'back.out(2)' }));
@@ -1315,24 +1161,30 @@ const DATA = {
     }
   }
 
-  /* Hitung jalur garis cahaya dari file sumber ke 3 kartu tujuan */
+  /* Hitung jalur garis cahaya: file sumber → 3 instalasi → kartu rekap */
   function layoutFlow(el) {
     const flow = $('.flow', el);
     if (!flow) return;
     const svg = $('.flow-svg', flow);
     if (getComputedStyle(svg).display === 'none') return;
     const fr = flow.getBoundingClientRect();
+    const mid = r => r.top + r.height / 2 - fr.top;
+    const curve = (x1, y1, x2, y2) => {
+      const mx = (x1 + x2) / 2, f = v => v.toFixed(1);
+      return `M${f(x1)},${f(y1)} C${f(mx)},${f(y1)} ${f(mx)},${f(y2)} ${f(x2)},${f(y2)}`;
+    };
+    const line = (path, i, cls = '') => `<path class="fl-base" d="${path}"/>
+      <path class="fl-glow ${cls}" d="${path}" style="animation-delay:${-i * 0.7}s"/>
+      <circle class="fl-dot" r="3.5"><animateMotion dur="2.6s" begin="${i * 0.45}s" repeatCount="indefinite" path="${path}"/></circle>`;
     const src = $('.flow-src .glass', flow).getBoundingClientRect();
-    const x1 = src.right - fr.left, y1 = src.top + src.height / 2 - fr.top;
+    const out = $('.flow-out .glass', flow);
+    const o = out ? out.getBoundingClientRect() : null;
     svg.setAttribute('viewBox', `0 0 ${fr.width} ${fr.height}`);
     svg.innerHTML = $$('.flow-dst .glass', flow).map((d, i) => {
-      const r = d.getBoundingClientRect();
-      const x2 = r.left - fr.left, y2 = r.top + r.height / 2 - fr.top + (i === 1 ? 0.5 : 0);
-      const mx = (x1 + x2) / 2;
-      const path = `M${x1.toFixed(1)},${y1.toFixed(1)} C${mx.toFixed(1)},${y1.toFixed(1)} ${mx.toFixed(1)},${y2.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}`;
-      return `<path class="fl-base" d="${path}"/>
-              <path class="fl-glow" d="${path}" style="animation-delay:${-i * 0.7}s"/>
-              <circle class="fl-dot" r="3.5"><animateMotion dur="2.6s" begin="${i * 0.45}s" repeatCount="indefinite" path="${path}"/></circle>`;
+      const r = d.getBoundingClientRect(), y = mid(r) + (i === 1 ? 0.5 : 0);
+      let html = line(curve(src.right - fr.left, mid(src), r.left - fr.left, y), i);
+      if (o) html += line(curve(r.right - fr.left, y, o.left - fr.left, mid(o) + (i - 1) * 14), i + 3, 'out');
+      return html;
     }).join('');
   }
 
@@ -1383,6 +1235,9 @@ const DATA = {
     gsap.killTweensOf(slides);
     slides.forEach(sl => { if (sl !== prev && sl !== cur) gsap.set(sl, { clearProps: 'transform,opacity,zIndex' }); });
     const d = 1.2, ease = 'power3.inOut';
+    prev.classList.add('is-turning');
+    cur.classList.add('is-turning');
+    gsap.delayedCall(d, () => { prev.classList.remove('is-turning'); cur.classList.remove('is-turning'); });
     gsap.fromTo(prev,
       { rotationY: 0, xPercent: 0, z: 0, opacity: 1, zIndex: 12, transformOrigin: dir > 0 ? '100% 50%' : '0% 50%' },
       { rotationY: -dir * 75, xPercent: -dir * 50, z: -320, opacity: 0, duration: d, ease, clearProps: 'transform,opacity,zIndex' });
@@ -1592,6 +1447,7 @@ const DATA = {
         running.splice(0).forEach(t => t.kill());
         gsap.killTweensOf(slides);
         gsap.set(slides, { clearProps: 'transform,opacity,zIndex' });
+        slides.forEach(sl => sl.classList.remove('is-turning'));
         slides.forEach(sl => {
           const p = partsOf(sl);
           gsap.killTweensOf([...p.split, ...p.chars, ...p.lines, ...p.cards]);
@@ -1599,7 +1455,7 @@ const DATA = {
           $$('[data-count]', sl).forEach(c => { c.textContent = fmt.format(+c.dataset.count) + (c.dataset.suffix || ''); });
           $$('[data-ring]', sl).forEach(r => r.setAttribute('stroke-dashoffset', RING_C * (1 - r.dataset.ring / 100)));
           $$('[data-w]', sl).forEach(b => { b.style.width = b.dataset.w + '%'; });
-          $$('.slot, .tl-node, .illu-bars i', sl).forEach(x => gsap.set(x, { clearProps: 'opacity,transform' }));
+          $$('.tl-node', sl).forEach(x => gsap.set(x, { clearProps: 'opacity,transform' }));
         });
       });
       Reveal.on('overviewhidden', () => {
@@ -1731,7 +1587,10 @@ function initScene() {
     return { pos: a, lines: L, lineOpacity: 0.22 };
   }
 
-  // b. Empat cincin orbit (4 proyek)
+  // b. Cincin orbit, satu cincin untuk setiap proyek di slide ringkasan (maks. 4)
+  const NPROJ = (() => {
+    try { const r = DATA.slides.find(x => x.tipe === 'ringkasan'); return Math.min(4, Math.max(2, r.urutan.length)); } catch (e) { return 4; }
+  })();
   function shapeOrbits() {
     const a = new Float32Array(COUNT * 3), L = [];
     const normals = [[1, 1, 1], [1, -1, -1], [-1, 1, -1], [-1, -1, 1]].map(v => new THREE.Vector3(...v).normalize());
@@ -1745,14 +1604,14 @@ function initScene() {
       return [(u.x * c + v.x * s) * r, (u.y * c + v.y * s) * r, (u.z * c + v.z * s) * r];
     };
     for (let i = 0; i < COUNT; i++) {
-      const r = Math.random(), k = i % 4;
+      const r = Math.random(), k = i % NPROJ;
       let p;
       if (r < 0.84) { p = pt(k, Math.random() * TAU, radii[k] + gauss() * 0.045); p = p.map(v => v + gauss() * 0.02); }
       else if (r < 0.92) { p = pt(k, k * 1.6 + 0.6, radii[k]).map(v => v + gauss() * 0.13); }
       else { p = [gauss() * 0.3, gauss() * 0.3, gauss() * 0.3]; }
       put(a, i, p[0], p[1], p[2]);
     }
-    for (let k = 0; k < 4; k++) for (let j = 0; j < 128; j++) {
+    for (let k = 0; k < NPROJ; k++) for (let j = 0; j < 128; j++) {
       L.push(...pt(k, j / 128 * TAU, radii[k]), ...pt(k, (j + 1) / 128 * TAU, radii[k]));
     }
     return { pos: a, lines: L, lineOpacity: 0.14 };
@@ -1793,75 +1652,7 @@ function initScene() {
     return { pos: a, lines: null };
   }
 
-  // e. Batang grafik 3D
-  function shapeBars() {
-    const a = new Float32Array(COUNT * 3);
-    const SP = 1.05, BW = 0.55, BASE = -1.7;
-    const H = [1.4, 2.1, 2.8, 3.3, 3.8, 1.1, 1.7, 2.4, 2.9, 3.4, 0.8, 1.3, 1.9, 2.5, 3.0];
-    const C = [[-1, 0, -1], [1, 0, -1], [1, 1, -1], [-1, 1, -1], [-1, 0, 1], [1, 0, 1], [1, 1, 1], [-1, 1, 1]];
-    const E = [[0, 1], [1, 2], [2, 3], [3, 0], [4, 5], [5, 6], [6, 7], [7, 4], [0, 4], [1, 5], [2, 6], [3, 7]];
-    for (let i = 0; i < COUNT; i++) {
-      if (Math.random() < 0.12) {
-        const onRow = Math.random() < 0.5;
-        const x = onRow ? rand(-3, 3) : (Math.floor(Math.random() * 7) - 3) * SP;
-        const z = onRow ? (Math.floor(Math.random() * 5) - 2) * SP * 0.9 : rand(-2, 2);
-        put(a, i, x, BASE, z);
-        continue;
-      }
-      const b = Math.floor(Math.random() * 15), cx = (b % 5 - 2) * SP, cz = (Math.floor(b / 5) - 1) * SP, h = H[b];
-      let px, py, pz;
-      if (Math.random() < 0.65) {
-        const e = E[Math.floor(Math.random() * 12)], t = Math.random(), p = C[e[0]], q = C[e[1]];
-        px = p[0] + (q[0] - p[0]) * t; py = p[1] + (q[1] - p[1]) * t; pz = p[2] + (q[2] - p[2]) * t;
-      } else {
-        const f = Math.floor(Math.random() * 5);
-        px = rand(-1, 1); py = Math.random(); pz = rand(-1, 1);
-        if (f === 0) px = -1; else if (f === 1) px = 1; else if (f === 2) pz = -1; else if (f === 3) pz = 1; else py = 1;
-      }
-      put(a, i, cx + px * BW / 2, BASE + py * h, cz + pz * BW / 2);
-    }
-    return { pos: a, lines: null };
-  }
-
-  // f. Bola dunia dengan jaringan (terhubung online)
-  function shapeGlobe() {
-    const a = new Float32Array(COUNT * 3), L = [];
-    const R = 2.6;
-    const randDir = () => { const z = rand(-1, 1), t = Math.random() * TAU, s = Math.sqrt(1 - z * z); return new THREE.Vector3(Math.cos(t) * s, z, Math.sin(t) * s); };
-    const arcs = [];
-    while (arcs.length < 24) {
-      const p = randDir(), q = randDir(), d = p.angleTo(q);
-      if (d > 0.6 && d < 2.2) arcs.push([p, q, d]);
-    }
-    const arcPt = ([p, q, d], t) => new THREE.Vector3().lerpVectors(p, q, t).normalize().multiplyScalar(R + Math.sin(t * Math.PI) * 0.45 * d);
-    const M = Math.floor(COUNT * 0.6);
-    let k = 0;
-    const tilt = new THREE.Euler(0.38, 0, 0.22);
-    for (let i = 0; i < COUNT; i++) {
-      const r = Math.random();
-      let v;
-      if (r < 0.6 && k < M) {
-        const y = 1 - 2 * (k + 0.5) / M, rr = Math.sqrt(1 - y * y), th = k * 2.39996;
-        v = new THREE.Vector3(Math.cos(th) * rr * R, y * R, Math.sin(th) * rr * R); k++;
-      } else if (r < 0.8) {
-        v = arcPt(arcs[Math.floor(Math.random() * arcs.length)], Math.random()).addScalar(gauss() * 0.015);
-      } else if (r < 0.9) {
-        const th = Math.random() * TAU, rr = 3.7 + gauss() * 0.05;
-        v = new THREE.Vector3(Math.cos(th) * rr, gauss() * 0.03, Math.sin(th) * rr).applyEuler(tilt);
-      } else {
-        v = randDir().multiplyScalar(R + Math.random() * 0.5);
-      }
-      put(a, i, v.x, v.y, v.z);
-    }
-    arcs.forEach(arc => { for (let j = 0; j < 28; j++) { const p = arcPt(arc, j / 28), q = arcPt(arc, (j + 1) / 28); L.push(p.x, p.y, p.z, q.x, q.y, q.z); } });
-    [-0.6, -0.3, 0, 0.3, 0.6].forEach(yy => {
-      const rr = Math.sqrt(1 - yy * yy) * R;
-      for (let j = 0; j < 72; j++) { const t0 = j / 72 * TAU, t1 = (j + 1) / 72 * TAU; L.push(Math.cos(t0) * rr, yy * R, Math.sin(t0) * rr, Math.cos(t1) * rr, yy * R, Math.sin(t1) * rr); }
-    });
-    return { pos: a, lines: L, lineOpacity: 0.16 };
-  }
-
-  // g. Kerangka piramida wireframe (tahap rancang bangun) dengan lantai berpola denah
+  // e. Kerangka piramida wireframe (tahap rancang bangun) dengan lantai berpola denah
   function shapePyramid() {
     const a = new Float32Array(COUNT * 3), L = [];
     const B = 2.3, BASE = -1.9, TOP = 2.5;
@@ -1888,7 +1679,7 @@ function initScene() {
     return { pos: a, lines: L, lineOpacity: 0.2 };
   }
 
-  // h. Anak panah / roket mengarah ke atas
+  // f. Anak panah / roket mengarah ke atas
   function shapeArrow() {
     const a = new Float32Array(COUNT * 3), L = [];
     const SR = 0.42, S0 = -2.2, S1 = 0.9, HR = 1.15, TIP = 3.1;
@@ -1910,7 +1701,11 @@ function initScene() {
     return { pos: a, lines: L, lineOpacity: 0.16 };
   }
 
-  const SHAPES = [shapeDNA(), shapeOrbits(), shapeCubes(), shapeTable(), shapeBars(), shapeGlobe(), shapePyramid(), shapeArrow()];
+  const SHAPES = [shapeDNA(), shapeOrbits(), shapeCubes(), shapeTable(), shapePyramid(), shapeArrow()];
+  const SH = { dna: 0, orbit: 1, kubus: 2, tabel: 3, piramida: 4, roket: 5 };
+  // Bentuk 3D dipilih berdasarkan jenis slide (bukan nomor urut), jadi aman bila slide ditambah/dihapus
+  const SHAPE_OF = { pembuka: SH.dna, ringkasan: SH.orbit, portal: SH.kubus, otomasi: SH.tabel, spj: SH.piramida, rencana: SH.roket };
+  const shapeFor = i => { try { const t = DATA.slides[i].tipe; return t in SHAPE_OF ? SHAPE_OF[t] : SH.dna; } catch (e) { return SH.dna; } };
 
   /* ---------- 3. Partikel utama (morph di shader) ---------- */
   const from = new Float32Array(COUNT * 3);
@@ -1944,14 +1739,14 @@ function initScene() {
 
   const uniforms = {
     uProgress: { value: 0 }, uTime: { value: 0 }, uPixel: { value: pixelRatio }, uScale: { value: innerHeight / 900 },
-    uSize: { value: small ? 1.1 : 1.0 }, uOpacity: { value: 1 }, uWave: { value: 0 }, uBars: { value: 0 }
+    uSize: { value: small ? 1.1 : 1.0 }, uOpacity: { value: 1 }, uWave: { value: 0 }
   };
   const SPREAD = 0.35;
   const material = new THREE.ShaderMaterial({
     uniforms, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
     vertexShader: /* glsl */`
       attribute vec3 aTarget; attribute float aRand; attribute float aSize; attribute vec3 aSwirl; attribute vec3 aColor;
-      uniform float uProgress, uTime, uPixel, uScale, uSize, uOpacity, uWave, uBars;
+      uniform float uProgress, uTime, uPixel, uScale, uSize, uOpacity, uWave;
       varying vec3 vColor; varying float vAlpha;
       void main(){
         float p = clamp((uProgress - aRand * ${SPREAD.toFixed(2)}) / ${(1 - SPREAD).toFixed(2)}, 0.0, 1.0);
@@ -1959,12 +1754,6 @@ function initScene() {
         vec3 pos = mix(position, aTarget, p) + aSwirl * sin(p * 3.14159265) * 0.6;
         // gelombang untuk tabel
         pos.y += uWave * (sin(pos.x * 0.9 + uTime * 1.3) * 0.32 + cos(pos.z * 1.2 + uTime * 1.0) * 0.22);
-        // batang grafik naik turun
-        if (uBars > 0.001) {
-          float id = floor((pos.x + 2.625) / 1.05) * 1.7 + floor((pos.z + 1.575) / 1.05) * 2.3;
-          float f = 0.7 + 0.3 * sin(uTime * 1.5 + id);
-          pos.y = -1.7 + (pos.y + 1.7) * mix(1.0, f, uBars);
-        }
         pos += vec3(sin(uTime * 0.6 + aRand * 30.0), cos(uTime * 0.5 + aRand * 20.0), sin(uTime * 0.4 + aRand * 10.0)) * 0.025;
         vec4 mv = modelViewMatrix * vec4(pos, 1.0);
         gl_Position = projectionMatrix * mv;
@@ -2077,14 +1866,12 @@ function initScene() {
 
   /* ---------- 7. Pose kamera & objek untuk tiap slide ---------- */
   const POSES = [
-    { pos: [3.4, 0, 0],      rot: [0.15, 0, -0.35], cam: [0, 0, 11],     op: 1.0 },  // 1 DNA
-    { pos: [0, 0.2, -1.5],   rot: [0.25, 0, 0],     cam: [0, 1.2, 13],   op: 0.55 }, // 2 orbit
-    { pos: [3.8, 0.1, -1],   rot: [0.4, 0.6, 0],    cam: [1, 1.5, 12],   op: 0.6 },  // 3 kubus
-    { pos: [1.2, -1.2, -2],  rot: [0.5, 0, 0],      cam: [0, 2.4, 11],   op: 0.55 }, // 4 tabel
-    { pos: [4, -0.3, -1.5],  rot: [0.2, 0.4, 0],    cam: [0.5, 1.2, 12], op: 0.6 },  // 5 grafik
-    { pos: [4.2, 0, -1],     rot: [0.2, 0, 0.1],    cam: [0, 0, 11.5],   op: 0.7 },  // 6 bola dunia
-    { pos: [5.6, 1.2, -3],   rot: [0.3, 0.5, 0],    cam: [0, 1.4, 11.5], op: 0.45 }, // 7 piramida
-    { pos: [7.4, 0.2, -2.5], rot: [0, 0, -0.3],     cam: [0, 0, 12],     op: 0.6 }   // 8 roket
+    { pos: [3.4, 0, 0],      rot: [0.15, 0, -0.35], cam: [0, 0, 11],     op: 1.0 },  // DNA (pembuka)
+    { pos: [0, 0.2, -1.5],   rot: [0.25, 0, 0],     cam: [0, 1.2, 13],   op: 0.55 }, // orbit (ringkasan)
+    { pos: [3.8, 0.1, -1],   rot: [0.4, 0.6, 0],    cam: [1, 1.5, 12],   op: 0.6 },  // kubus (portal)
+    { pos: [1.2, -1.2, -2],  rot: [0.5, 0, 0],      cam: [0, 2.4, 11],   op: 0.5 },  // tabel (otomasi)
+    { pos: [5.6, 1.2, -3],   rot: [0.3, 0.5, 0],    cam: [0, 1.4, 11.5], op: 0.45 }, // piramida (SPJ)
+    { pos: [7.4, 0.2, -2.5], rot: [0, 0, -0.3],     cam: [0, 0, 12],     op: 0.6 }   // roket (target)
   ];
   const poseFor = i => {
     const p = POSES[i] || POSES[0];
@@ -2127,8 +1914,7 @@ function initScene() {
     uniforms.uProgress.value = 0;
     if (dur <= 0) uniforms.uProgress.value = 1;
     else gsap.to(uniforms.uProgress, { value: 1, duration: dur, ease: 'power2.inOut' });
-    gsap.to(uniforms.uWave, { value: k === 3 ? 1 : 0, duration: Math.max(dur, 0.01), overwrite: 'auto' });
-    gsap.to(uniforms.uBars, { value: k === 4 ? 1 : 0, duration: Math.max(dur, 0.01), overwrite: 'auto' });
+    gsap.to(uniforms.uWave, { value: k === SH.tabel ? 1 : 0, duration: Math.max(dur, 0.01), overwrite: 'auto' });
     lineObjs.forEach((l, j) => {
       if (!l) return;
       const on = j === k;
@@ -2138,7 +1924,7 @@ function initScene() {
         overwrite: 'auto', onComplete: () => { if (!on) l.visible = false; }
       });
     });
-    const exOn = k === 7;
+    const exOn = k === SH.roket;
     if (exOn) exhaust.visible = true;
     gsap.to(exU.uOn, { value: exOn ? 1 : 0, duration: Math.max(exOn ? dur : 0.5, 0.01), delay: exOn ? dur * 0.5 : 0, overwrite: 'auto',
       onComplete: () => { if (!exOn) exhaust.visible = false; } });
@@ -2149,11 +1935,12 @@ function initScene() {
     if (i === slideNow) return;
     slideNow = i;
     const d = reduce ? 0 : 1.8;
-    applyPose(i, d);
+    const shape = shapeFor(i);
+    applyPose(shape, d);
     if (returnCall) { returnCall.kill(); returnCall = null; }
-    morphTo(i, reduce ? 0 : 2.2);
-    // Slide 8: roket naik, lalu kembali menjadi heliks DNA
-    if (i === 7) returnCall = gsap.delayedCall(reduce ? 1 : 6, () => { if (slideNow === 7) morphTo(0, reduce ? 0 : 2.8); });
+    morphTo(shape, reduce ? 0 : 2.2);
+    // Slide target: roket naik, lalu kembali menjadi heliks DNA
+    if (shape === SH.roket) returnCall = gsap.delayedCall(reduce ? 1 : 6, () => { if (slideNow === i) morphTo(SH.dna, reduce ? 0 : 2.8); });
   }
 
   /* ---------- 9. Interaksi & event dari presentasi ---------- */
@@ -2164,18 +1951,18 @@ function initScene() {
   function start(index) {
     if (started) return;
     started = true;
-    applyPose(index, reduce ? 0 : 2.4);
+    const shape = shapeFor(index);
+    applyPose(shape, reduce ? 0 : 2.4);
     slideNow = index;
-    shapeNow = index;
-    to.set(SHAPES[index].pos);
+    shapeNow = shape;
+    to.set(SHAPES[shape].pos);
     geo.attributes.aTarget.needsUpdate = true;
-    uniforms.uWave.value = index === 3 ? 1 : 0;
-    uniforms.uBars.value = index === 4 ? 1 : 0;
-    const l = lineObjs[index];
-    if (l) { l.visible = true; gsap.to(l.material, { opacity: SHAPES[index].lineOpacity, duration: reduce ? 0.01 : 1.5, delay: reduce ? 0 : 2 }); }
+    uniforms.uWave.value = shape === SH.tabel ? 1 : 0;
+    const l = lineObjs[shape];
+    if (l) { l.visible = true; gsap.to(l.material, { opacity: SHAPES[shape].lineOpacity, duration: reduce ? 0.01 : 1.5, delay: reduce ? 0 : 2 }); }
     if (reduce) uniforms.uProgress.value = 1;
     else gsap.to(uniforms.uProgress, { value: 1, duration: 3, ease: 'power3.inOut' });
-    if (index === 7) { slideNow = -1; goSlide(7); }
+    if (shape === SH.roket) { slideNow = -1; shapeNow = -1; goSlide(index); }
   }
   window.addEventListener('deck:start', e => start(e.detail.index));
   window.addEventListener('deck:slide', e => { swingDir = e.detail.dir || 1; if (!started) start(e.detail.index); else goSlide(e.detail.index); });
